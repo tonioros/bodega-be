@@ -64,6 +64,7 @@ USER www
 
 RUN /usr/local/bin/composer install --no-dev
 RUN php artisan key:generate
+RUN php artisan config:clear
 
 # Config Cache and optimize
 RUN php artisan config:cache
