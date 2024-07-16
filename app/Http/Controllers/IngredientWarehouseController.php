@@ -10,6 +10,31 @@ use Illuminate\Support\Facades\Http;
 
 class IngredientWarehouseController extends Controller
 {
+
+    /**
+     * Get available Ingredients
+     *
+     * @param Request $request
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function index(Request $request)
+    {
+        $name = $request->get("name");
+        $orderBy = $request->get("orderBy");
+        $limit = $request->get("limit");
+        $ingredients = IngredientWarehouse::query();
+        if ($name) {
+            $ingredients->where('name', $name);
+        }
+        if ($limit) {
+            $ingredients->limit($limit);
+        }
+        if ($orderBy) {
+            $ingredients->orderBy('id', $orderBy);
+        }
+        return $ingredients->get();
+    }
+
     /**
      * Display a listing of ingredients and total available.
      * if not have enough available, consume marketplace API
@@ -19,7 +44,7 @@ class IngredientWarehouseController extends Controller
      * @param string $names
      * @return \Illuminate\Support\Collection
      */
-    public function index(Request $request, string $names)
+    public function ingredientsByName(Request $request, string $names)
     {
         $ingredientListReq = collect(explode(",", $names));
         $ingredientsToReturn = collect();
@@ -34,25 +59,6 @@ class IngredientWarehouseController extends Controller
             $ingredientsToReturn->push($ingredient);
         });
         return $ingredientsToReturn;
-    }
-
-    /**
-     * Update total available for the ingredients selected
-     *
-     * @param string $names
-     * @return array
-     */
-    public function ingredientsToUse(Request $request)
-    {
-        $ingredientListReq = collect($request->all());
-        $returnList = [];
-        foreach ($ingredientListReq as $ingredientName => $totalToUse) {
-            $ingredient = IngredientWarehouse::where('name', $ingredientName)->first();
-            $ingredient->total_available -= intval($totalToUse);
-            $ingredient->save();
-            $returnList[$ingredientName] = $ingredient->total_available;
-        }
-        return $returnList;
     }
 
     /**
@@ -79,5 +85,24 @@ class IngredientWarehouseController extends Controller
         if ($quantity > $ingredientWarehouse->total_available) {
             $this->buyAIngredient($ingredientWarehouse, $quantity);
         }
+    }
+
+    /**
+     * Update total available for the ingredients selected
+     *
+     * @param string $names
+     * @return array
+     */
+    public function ingredientsToUse(Request $request)
+    {
+        $ingredientListReq = collect($request->all());
+        $returnList = [];
+        foreach ($ingredientListReq as $ingredientName => $totalToUse) {
+            $ingredient = IngredientWarehouse::where('name', $ingredientName)->first();
+            $ingredient->total_available -= intval($totalToUse);
+            $ingredient->save();
+            $returnList[$ingredientName] = $ingredient->total_available;
+        }
+        return $returnList;
     }
 }

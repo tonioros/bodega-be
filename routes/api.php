@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get("/ingredients/{names}", [IngredientWarehouseController::class, 'index']);
+Route::get("/ingredients", [IngredientWarehouseController::class, 'index']);
+Route::get("/ingredients/{names}", [IngredientWarehouseController::class, 'ingredientsByName']);
 Route::post("/ingredients-to-use", [IngredientWarehouseController::class, 'ingredientsToUse']);
 Route::get("/market-purchase", [MarketPurchaseController::class, 'index']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
