@@ -16,4 +16,14 @@ class MarketPurchase extends Model
         "total_purchased",
     ];
 
+    /**
+     * Return Ingredient bought in Market Place
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function ingredient()
+    {
+        return $this->belongsTo(IngredientWarehouse::class);
+    }
+
 }

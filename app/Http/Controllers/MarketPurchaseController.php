@@ -19,12 +19,16 @@ class MarketPurchaseController extends Controller
     public function index(Request $request)
     {
         $request_date = $request->get("request_date");
+        $withIngredients = $request->get("withIngredients");
         $limit = $request->get("limit");
         $orderBy = $request->get("orderBy");
         $marketPurchase = MarketPurchase::query();
 
         if ($request_date) {
             $marketPurchase->whereDate('request_date', $request_date);
+        }
+        if ($withIngredients) {
+            $marketPurchase->with(["ingredient"]);
         }
         if ($limit) {
             $marketPurchase->limit($limit);
