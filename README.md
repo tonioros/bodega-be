@@ -55,13 +55,15 @@ Laravel con el siguiente comando
 
 Esto tomara unos minutos, ve por un ☕/🍺/🥤 lo que prefieras
 
-Luego configura el archivo `.env`, aca deberas agregar credenciales de BD, URL para el API de Plaza de Mercado (MARKETPLACE_URL), Correo y
+Luego configura el archivo `.env`, aca deberas agregar credenciales de BD, URL para el API de Plaza de Mercado (
+MARKETPLACE_URL), Correo y
 mas
 
 Al completar el archivo `.env` debes de ejecutar estes comando, este generara un HASH unico el cual servidor usara para
 generar claves HASH internas:
 
 `php artisan key:generate`
+
 
 ## Iniciar Proyecto
 
@@ -75,6 +77,19 @@ Si obtienes algo como esto:
 Press Ctrl+C to stop the server`
 
 Felicidades!! has logrado iniciar el proyecto con exito, enjoy! 🙌🏽🎉🍾🥂
+
+### Docker Container
+
+Este proyecto esta contenido en un contenedor de Docker para hacer build image ejecuta el siguiente comando, esto puede tardar unos minutos
+
+`docker build -t tonioros/bodega:latest .`
+
+Y para iniciar container ejecuta el comando:
+
+`docker run --name=bodega -v /php/local.ini:/usr/local/etc/php/conf.d/local.ini -v "$(PWD)/bodega:/var/www" -e SERVICE_NAME=app -e SERVICE_TAGS=dev --restart unless-stopped -p 8080:80 -p 444:443 tonioros/bodega:latest `
+
+Con esto tendras iniciado el proyecto y corriendo dentro de la imagen generada por ti
+
 
 ### Migracion de tablas de BD
 
