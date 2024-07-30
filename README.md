@@ -1,6 +1,6 @@
 # Bodega API
 
-Proyecto hecho con Laravel v10 como prueba tecnica para Alegra, este API servira end-points para Ingredientes en Bodega
+Proyecto hecho con Laravel v10 como ejercicio para implementacion de micro servicios en GCP. Este API servira end-points para Ingredientes en Bodega
 y Compras en la plaza de mercado
 
 Para probar los servicios de este API puedes descargar
